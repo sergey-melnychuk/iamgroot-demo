@@ -1,3 +1,10 @@
+use std::net::SocketAddr;
+
+use axum::{Router, routing::post, extract::State, Json, response::IntoResponse};
+use implemented::Impl;
+use generated::gen;
+use jsonrpc::Request;
+
 // NOTE: This will be provided as the only necessary compile-time dependency.
 mod jsonrpc;
 
@@ -7,6 +14,25 @@ mod generated;
 // User-defined implementation of a generated `gen::Rpc` trait.
 mod implemented;
 
-fn main() {
-    println!("It works!");
+#[tokio::main]
+async fn main() {
+    let ctx = Impl {};
+
+    let app = Router::new()
+        .route("/api", post(handle))
+        .with_state(ctx);
+
+    let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
+    axum::Server::bind(&addr)
+        .serve(app.into_make_service())
+        .await
+        .unwrap();
+}
+
+async fn handle(
+    State(rpc): State<Impl>,
+    Json(req): Json<Request>,
+) -> impl IntoResponse {
+    let res = gen::handle(&rpc, &req);
+    Json(res)
 }

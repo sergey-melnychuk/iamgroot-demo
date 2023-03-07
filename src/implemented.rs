@@ -1,6 +1,7 @@
 use crate::generated::gen;
 use crate::jsonrpc;
 
+#[derive(Clone)]
 pub struct Impl {}
 
 impl gen::Rpc for Impl {
