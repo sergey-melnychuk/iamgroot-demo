@@ -25,3 +25,13 @@ cargo run --example rpc
   - 100% transport/framework agnostic.
   - Idiomatic pure-Rust.
 - No need to manually 'adjust' DTOs to any schema changes
+
+### Usage
+- Safe & zero-toil API changes automation
+- End-to-end shared-nothing API testing
+- Extend to generate stubs in other languages:
+  - Java/Scala/etc
+  - Go
+  - C/C++
+  - Erlang
+  - etc
