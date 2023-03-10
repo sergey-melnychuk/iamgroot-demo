@@ -43,28 +43,43 @@ impl gen::Rpc for Impl {
                     parent_hash: gen::BlockHash(gen::Felt::try_new("0x4")?),
                 },
                 block_body_with_txs: gen::BlockBodyWithTxs {
-                    transactions: vec![gen::Txn::InvokeTxn(gen::InvokeTxn {
-                        common_txn_properties: gen::CommonTxnProperties {
-                            transaction_hash: gen::TxnHash(gen::Felt::try_new("0x1")?),
-                            broadcasted_txn_common_properties:
-                                gen::BroadcastedTxnCommonProperties {
-                                    nonce: gen::Felt::try_new("0x1")?,
-                                    version: gen::NumAsHex::try_new("0x1")?,
-                                    max_fee: gen::Felt::try_new("0x1")?,
-                                    signature: gen::Signature(vec![gen::Felt::try_new("0x1")?]),
-                                },
-                        },
-                        r#type: gen::InvokeTxnType::Invoke,
-                        function_call: gen::FunctionCall {
-                            calldata: vec![gen::Felt::try_new("0x1")?],
-                            entry_point_selector: gen::Felt::try_new("0x1")?,
-                            contract_address: gen::Address(gen::Felt::try_new("0x1")?),
-                        },
-                        invoke_txn_v1: gen::InvokeTxnV1 {
-                            sender_address: gen::Address(gen::Felt::try_new("0x1")?),
-                            calldata: vec![gen::Felt::try_new("0x1")?],
-                        },
-                    })],
+                    transactions: vec![
+                        gen::Txn::InvokeTxn(gen::InvokeTxn {
+                            common_txn_properties: gen::CommonTxnProperties {
+                                transaction_hash: gen::TxnHash(gen::Felt::try_new("0x1")?),
+                                broadcasted_txn_common_properties:
+                                    gen::BroadcastedTxnCommonProperties {
+                                        nonce: gen::Felt::try_new("0x1")?,
+                                        version: gen::NumAsHex::try_new("0x1")?,
+                                        max_fee: gen::Felt::try_new("0x1")?,
+                                        signature: gen::Signature(vec![gen::Felt::try_new("0x1")?]),
+                                    },
+                            },
+                            r#type: gen::InvokeTxnType::Invoke,
+                            invoke_txn_kind: gen::InvokeTxnKind::FunctionCall(gen::FunctionCall {
+                                calldata: vec![gen::Felt::try_new("0x1")?],
+                                entry_point_selector: gen::Felt::try_new("0x1")?,
+                                contract_address: gen::Address(gen::Felt::try_new("0x1")?),
+                            }),
+                        }),
+                        gen::Txn::InvokeTxn(gen::InvokeTxn {
+                            common_txn_properties: gen::CommonTxnProperties {
+                                transaction_hash: gen::TxnHash(gen::Felt::try_new("0x2")?),
+                                broadcasted_txn_common_properties:
+                                    gen::BroadcastedTxnCommonProperties {
+                                        nonce: gen::Felt::try_new("0x2")?,
+                                        version: gen::NumAsHex::try_new("0x2")?,
+                                        max_fee: gen::Felt::try_new("0x2")?,
+                                        signature: gen::Signature(vec![gen::Felt::try_new("0x2")?]),
+                                    },
+                            },
+                            r#type: gen::InvokeTxnType::Invoke,
+                            invoke_txn_kind: gen::InvokeTxnKind::InvokeTxnV1(gen::InvokeTxnV1 {
+                                sender_address: gen::Address(gen::Felt::try_new("0x1")?),
+                                calldata: vec![gen::Felt::try_new("0x1")?],
+                            }),
+                        }),
+                    ],
                 },
             },
         ))

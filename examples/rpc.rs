@@ -154,7 +154,7 @@ fn main() {
     );
 
     call(
-        14,
+        1401,
         serde_json::json!({
             "jsonrpc": "2.0",
             "method": "starknet_estimateFee",
@@ -167,21 +167,38 @@ fn main() {
                         "0x4",
                         "0x5"
                     ],
-                    "function_call": {
-                        "calldata": [
-                            "0x6",
-                            "0x7"
-                        ],
-                        "entry_point_selector": "0x8",
-                        "contract_address": "0x9"
-                    },
-                    "invoke_txn_v1": {
-                        "sender_address": "0xA",
-                        "calldata": [
-                            "0xB",
-                            "0xC"
-                        ]
-                    },
+                    "calldata": [
+                        "0x6",
+                        "0x7"
+                    ],
+                    "entry_point_selector": "0x8",
+                    "contract_address": "0x9",
+                    "type": "INVOKE"
+                },
+                "block_id": 1
+            },
+        }),
+    );
+
+    call(
+        1402,
+        serde_json::json!({
+            "jsonrpc": "2.0",
+            "method": "starknet_estimateFee",
+            "params": {
+                "request": {
+                    "nonce": "0x1",
+                    "version": "0x2",
+                    "max_fee": "0x3",
+                    "signature": [
+                        "0x4",
+                        "0x5"
+                    ],
+                    "sender_address": "0xA",
+                    "calldata": [
+                        "0xB",
+                        "0xC"
+                    ],
                     "type": "INVOKE"
                 },
                 "block_id": 1
@@ -268,7 +285,7 @@ fn main() {
     );
 
     call(
-        22,
+        2201,
         serde_json::json!({
             "jsonrpc": "2.0",
             "method": "starknet_addInvokeTransaction",
@@ -281,21 +298,36 @@ fn main() {
                         "0x4"
                     ],
                     "type": "INVOKE",
-                    "function_call": {
-                        "calldata": [
-                            "0x6",
-                            "0x7"
-                        ],
-                        "entry_point_selector": "0x8",
-                        "contract_address": "0x9"
-                    },
-                    "invoke_txn_v1": {
-                        "sender_address": "0xA",
-                        "calldata": [
-                            "0xB",
-                            "0xC"
-                        ]
-                    }
+                    "calldata": [
+                        "0x6",
+                        "0x7"
+                    ],
+                    "entry_point_selector": "0x8",
+                    "contract_address": "0x9"
+                }
+            }
+        }),
+    );
+
+    call(
+        2202,
+        serde_json::json!({
+            "jsonrpc": "2.0",
+            "method": "starknet_addInvokeTransaction",
+            "params": {
+                "invoke_transaction": {
+                    "max_fee": "0x1",
+                    "version": "0x2",
+                    "nonce": "0x3",
+                    "signature": [
+                        "0x4"
+                    ],
+                    "type": "INVOKE",
+                    "sender_address": "0xA",
+                    "calldata": [
+                        "0xB",
+                        "0xC"
+                    ]
                 }
             }
         }),

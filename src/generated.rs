@@ -106,12 +106,8 @@ pub mod gen {
     pub struct BroadcastedDeclareTxnV1 {
         #[serde(flatten)]
         pub broadcasted_txn_common_properties: BroadcastedTxnCommonProperties,
-        #[serde(default)]
-        #[serde(skip_serializing_if = "Option::is_none")]
-        pub contract_class: Option<DeprecatedContractClass>,
-        #[serde(default)]
-        #[serde(skip_serializing_if = "Option::is_none")]
-        pub sender_address: Option<Address>,
+        pub contract_class: DeprecatedContractClass,
+        pub sender_address: Address,
     }
 
     // object: 'BROADCASTED_DECLARE_TXN_V2'
@@ -147,10 +143,19 @@ pub mod gen {
     #[derive(Debug, Deserialize, Serialize)]
     pub struct BroadcastedInvokeTxn {
         #[serde(flatten)]
+        pub broadcasted_invoke_txn_kind: BroadcastedInvokeTxnKind,
+        #[serde(flatten)]
         pub broadcasted_txn_common_properties: BroadcastedTxnCommonProperties,
-        pub function_call: FunctionCall,
-        pub invoke_txn_v1: InvokeTxnV1,
         pub r#type: BroadcastedInvokeTxnType,
+    }
+
+    // object: 'BROADCASTED_INVOKE_TXN_KIND'
+    #[derive(Debug, Deserialize, Serialize)]
+    #[serde(rename_all = "UPPERCASE")]
+    #[serde(untagged)]
+    pub enum BroadcastedInvokeTxnKind {
+        FunctionCall(FunctionCall),
+        InvokeTxnV1(InvokeTxnV1),
     }
 
     // object: 'BROADCASTED_INVOKE_TXN_type'
@@ -690,9 +695,18 @@ pub mod gen {
     pub struct InvokeTxn {
         #[serde(flatten)]
         pub common_txn_properties: CommonTxnProperties,
-        pub function_call: FunctionCall,
-        pub invoke_txn_v1: InvokeTxnV1,
+        #[serde(flatten)]
+        pub invoke_txn_kind: InvokeTxnKind,
         pub r#type: InvokeTxnType,
+    }
+
+    // object: 'INVOKE_TXN_KIND'
+    #[derive(Debug, Deserialize, Serialize)]
+    #[serde(rename_all = "UPPERCASE")]
+    #[serde(untagged)]
+    pub enum InvokeTxnKind {
+        FunctionCall(FunctionCall),
+        InvokeTxnV1(InvokeTxnV1),
     }
 
     // object: 'INVOKE_TXN_RECEIPT'
@@ -2208,11 +2222,7 @@ pub mod gen {
     }
 
     pub fn handle<RPC: Rpc>(rpc: &RPC, req: &jsonrpc::Request) -> jsonrpc::Response {
-        let params = if let Some(params) = req.params.as_ref() {
-            params
-        } else {
-            return jsonrpc::Response::error(-32600, "Invalid Request");
-        };
+        let params = &req.params.clone().unwrap_or_default();
 
         let response = match req.method.as_str() {
             "starknet_getBlockWithTxHashes" => handle_starknet_getBlockWithTxHashes(rpc, params),
