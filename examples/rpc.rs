@@ -5,7 +5,7 @@ fn main() {
             "jsonrpc": "2.0",
             "method": "starknet_getBlockWithTxHashes",
             "params": {
-                "block_id": "0xFACE"
+                "block_id": {"block_hash": "0x195bebe9fd162e2cefdb735d079151175890d40ab24d7583e8f8a1203f9aec5"}
             }
         }),
     );
@@ -16,7 +16,7 @@ fn main() {
             "jsonrpc": "2.0",
             "method": "starknet_getBlockWithTxs",
             "params": {
-                "block_id": 123456789
+                "block_id": {"block_number": 777777}
             }
         }),
     );
@@ -27,7 +27,7 @@ fn main() {
             "jsonrpc": "2.0",
             "method": "starknet_getStateUpdate",
             "params": {
-                "block_id": "PENDING"
+                "block_id": "pending"
             }
         }),
     );
@@ -40,7 +40,7 @@ fn main() {
             "params": {
                 "contract_address": "0x1",
                 "key": "0x02",
-                "block_id": 42,
+                "block_id": {"block_number": 777777},
             }
         }),
     );
@@ -51,7 +51,7 @@ fn main() {
             "jsonrpc": "2.0",
             "method": "starknet_getTransactionByHash",
             "params": {
-                "transaction_hash": "0xcafebabe",
+                "transaction_hash": "0x132a1476b6050b65048c5c654a4d028cab53e3cf13e36fac3750c89e85446ed",
             }
         }),
     );
@@ -62,7 +62,7 @@ fn main() {
             "jsonrpc": "2.0",
             "method": "starknet_getTransactionByHash",
             "params": {
-                "transaction_hash": "0xcafebabe",
+                "transaction_hash": "0x132a1476b6050b65048c5c654a4d028cab53e3cf13e36fac3750c89e85446ed",
             }
         }),
     );
@@ -73,7 +73,7 @@ fn main() {
             "jsonrpc": "2.0",
             "method": "starknet_getTransactionByBlockIdAndIndex",
             "params": {
-                "block_id": 42,
+                "block_id": {"block_number": 777777},
                 "index": 24
             }
         }),
@@ -85,7 +85,7 @@ fn main() {
             "jsonrpc": "2.0",
             "method": "starknet_getTransactionReceipt",
             "params": {
-                "transaction_hash": "0x1"
+                "transaction_hash": "0x132a1476b6050b65048c5c654a4d028cab53e3cf13e36fac3750c89e85446ed"
             }
         }),
     );
@@ -96,7 +96,7 @@ fn main() {
             "jsonrpc": "2.0",
             "method": "starknet_getClass",
             "params": {
-                "block_id": 1,
+                "block_id": {"block_number": 1},
                 "class_hash": "0x1"
             }
         }),
@@ -108,7 +108,7 @@ fn main() {
             "jsonrpc": "2.0",
             "method": "starknet_getClassAt",
             "params": {
-                "block_id": 42,
+                "block_id": {"block_number": 42},
                 "contract_address": "0xFF"
             }
         }),
@@ -120,7 +120,7 @@ fn main() {
             "jsonrpc": "2.0",
             "method": "starknet_getClassHashAt",
             "params": {
-                "block_id": "PENDING",
+                "block_id": "pending",
                 "contract_address": "0x1"
             }
         }),
@@ -132,7 +132,7 @@ fn main() {
             "jsonrpc": "2.0",
             "method": "starknet_getBlockTransactionCount",
             "params": {
-                "block_id": "LATEST"
+                "block_id": "latest"
             }
         }),
     );
@@ -161,7 +161,7 @@ fn main() {
             "params": {
                 "request": {
                     "nonce": "0x1",
-                    "version": "0x2",
+                    "version": "0x0",
                     "max_fee": "0x3",
                     "signature": [
                         "0x4",
@@ -175,7 +175,7 @@ fn main() {
                     "contract_address": "0x9",
                     "type": "INVOKE"
                 },
-                "block_id": 1
+                "block_id": {"block_number": 1}
             },
         }),
     );
@@ -188,7 +188,7 @@ fn main() {
             "params": {
                 "request": {
                     "nonce": "0x1",
-                    "version": "0x2",
+                    "version": "0x0",
                     "max_fee": "0x3",
                     "signature": [
                         "0x4",
@@ -201,7 +201,7 @@ fn main() {
                     ],
                     "type": "INVOKE"
                 },
-                "block_id": 1
+                "block_id": {"block_number": 1}
             },
         }),
     );
@@ -258,8 +258,8 @@ fn main() {
             "method": "starknet_getEvents",
             "params": {
                 "filter": {
-                    "to_block": 200,
-                    "from_block": 100,
+                    "to_block": {"block_number": 200},
+                    "from_block": {"block_number": 100},
                     "address": "0xA",
                     "keys": [
                         ["0x1", "0x2"],
@@ -278,7 +278,7 @@ fn main() {
             "jsonrpc": "2.0",
             "method": "starknet_getNonce",
             "params": {
-                "block_id": 12,
+                "block_id": {"block_number": 12},
                 "contract_address": "0x1"
             }
         }),
@@ -292,7 +292,7 @@ fn main() {
             "params": {
                 "invoke_transaction": {
                     "max_fee": "0x1",
-                    "version": "0x2",
+                    "version": "0x1",
                     "nonce": "0x3",
                     "signature": [
                         "0x4"
@@ -317,7 +317,7 @@ fn main() {
             "params": {
                 "invoke_transaction": {
                     "max_fee": "0x1",
-                    "version": "0x2",
+                    "version": "0x0",
                     "nonce": "0x3",
                     "signature": [
                         "0x4"
@@ -339,18 +339,20 @@ fn main() {
             "jsonrpc": "2.0",
             "method": "starknet_addDeclareTransaction",
             "params": {
-                "max_fee": "0x1",
-                "version": "0x2",
-                "nonce": "0x3",
-                "signature": [
-                    "0x4"
-                ],
-                "contract_address_salt": "0x5",
-                "type": "DEPLOYACCOUNT",
-                "class_hash": "0x7",
-                "constructor_calldata": [
-                    "0x8"
-                ]
+                "declare_transaction": {
+                    "max_fee": "0x1",
+                    "version": "0x0",
+                    "nonce": "0x3",
+                    "signature": [
+                        "0x4"
+                    ],
+                    "contract_address_salt": "0x5",
+                    "type": "DECLARE",
+                    "class_hash": "0x7",
+                    "constructor_calldata": [
+                        "0x8"
+                    ]
+                }
             }
         }),
     );
@@ -361,22 +363,27 @@ fn main() {
             "jsonrpc": "2.0",
             "method": "starknet_addDeployAccountTransaction",
             "params": {
-                "max_fee": "0x1",
-                "version": "0x2",
-                "nonce": "0x3",
-                "signature": [
-                    "0x4"
-                ],
-                "contract_address_salt": "0x5",
-                "type": "DEPLOYACCOUNT",
-                "class_hash": "0x7",
-                "constructor_calldata": [
-                    "0x8"
-                ]
+                "deploy_account_transaction": {
+                    "max_fee": "0x1",
+                    "version": "0x0",
+                    "nonce": "0x3",
+                    "signature": [
+                        "0x4"
+                    ],
+                    "contract_address_salt": "0x5",
+                    "type": "DEPLOY_ACCOUNT",
+                    "class_hash": "0x7",
+                    "constructor_calldata": [
+                        "0x8"
+                    ]
+                }
             }
         }),
     );
 }
+
+// const URL: &str = "https://starknet-goerli.infura.io/v3/4102c42653154fd097c3be91f19132a4";
+const URL: &str = "http://localhost:3000/api";
 
 fn call(id: i64, json: serde_json::Value) {
     use iamgroot::jsonrpc;
@@ -388,7 +395,7 @@ fn call(id: i64, json: serde_json::Value) {
 
     let client = reqwest::blocking::Client::new();
     let res: jsonrpc::Response = client
-        .post("http://localhost:3000/api")
+        .post(URL)
         .json(&req)
         .send()
         .unwrap()
