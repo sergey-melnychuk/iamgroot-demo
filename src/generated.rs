@@ -42,11 +42,10 @@ pub mod gen {
 
     // object: 'BLOCK_ID'
     #[derive(Debug, Deserialize, Serialize)]
-    #[serde(rename_all = "UPPERCASE")]
     #[serde(untagged)]
     pub enum BlockId {
-        BlockHash(BlockHash),
-        BlockNumber(BlockNumber),
+        BlockHash { block_hash: BlockHash },
+        BlockNumber { block_number: BlockNumber },
         BlockTag(BlockTag),
     }
 
@@ -56,19 +55,23 @@ pub mod gen {
 
     // object: 'BLOCK_STATUS'
     #[derive(Debug, Deserialize, Serialize)]
-    #[serde(rename_all = "UPPERCASE")]
     pub enum BlockStatus {
+        #[serde(rename = "ACCEPTED_ON_L1")]
         AcceptedOnL1,
+        #[serde(rename = "ACCEPTED_ON_L2")]
         AcceptedOnL2,
+        #[serde(rename = "PENDING")]
         Pending,
+        #[serde(rename = "REJECTED")]
         Rejected,
     }
 
     // object: 'BLOCK_TAG'
     #[derive(Debug, Deserialize, Serialize)]
-    #[serde(rename_all = "UPPERCASE")]
     pub enum BlockTag {
+        #[serde(rename = "latest")]
         Latest,
+        #[serde(rename = "pending")]
         Pending,
     }
 
@@ -94,7 +97,6 @@ pub mod gen {
 
     // object: 'BROADCASTED_DECLARE_TXN'
     #[derive(Debug, Deserialize, Serialize)]
-    #[serde(rename_all = "UPPERCASE")]
     #[serde(untagged)]
     pub enum BroadcastedDeclareTxn {
         BroadcastedDeclareTxnV1(BroadcastedDeclareTxnV1),
@@ -125,8 +127,8 @@ pub mod gen {
 
     // object: 'BROADCASTED_DECLARE_TXN_V2_type'
     #[derive(Debug, Deserialize, Serialize)]
-    #[serde(rename_all = "UPPERCASE")]
     pub enum BroadcastedDeclareTxnV2Type {
+        #[serde(rename = "DECLARE")]
         Declare,
     }
 
@@ -151,7 +153,6 @@ pub mod gen {
 
     // object: 'BROADCASTED_INVOKE_TXN_KIND'
     #[derive(Debug, Deserialize, Serialize)]
-    #[serde(rename_all = "UPPERCASE")]
     #[serde(untagged)]
     pub enum BroadcastedInvokeTxnKind {
         FunctionCall(FunctionCall),
@@ -160,14 +161,13 @@ pub mod gen {
 
     // object: 'BROADCASTED_INVOKE_TXN_type'
     #[derive(Debug, Deserialize, Serialize)]
-    #[serde(rename_all = "UPPERCASE")]
     pub enum BroadcastedInvokeTxnType {
+        #[serde(rename = "INVOKE")]
         Invoke,
     }
 
     // object: 'BROADCASTED_TXN'
     #[derive(Debug, Deserialize, Serialize)]
-    #[serde(rename_all = "UPPERCASE")]
     #[serde(untagged)]
     pub enum BroadcastedTxn {
         BroadcastedDeclareTxn(BroadcastedDeclareTxn),
@@ -251,7 +251,6 @@ pub mod gen {
 
     // object: 'CONTRACT_ABI_ENTRY'
     #[derive(Debug, Deserialize, Serialize)]
-    #[serde(rename_all = "UPPERCASE")]
     #[serde(untagged)]
     pub enum ContractAbiEntry {
         EventAbiEntry(EventAbiEntry),
@@ -296,7 +295,6 @@ pub mod gen {
 
     // object: 'DECLARE_TXN'
     #[derive(Debug, Deserialize, Serialize)]
-    #[serde(rename_all = "UPPERCASE")]
     #[serde(untagged)]
     pub enum DeclareTxn {
         DeclareTxnV1(DeclareTxnV1),
@@ -313,8 +311,8 @@ pub mod gen {
 
     // object: 'DECLARE_TXN_RECEIPT_type'
     #[derive(Debug, Deserialize, Serialize)]
-    #[serde(rename_all = "UPPERCASE")]
     pub enum DeclareTxnReceiptType {
+        #[serde(rename = "DECLARE")]
         Declare,
     }
 
@@ -330,8 +328,8 @@ pub mod gen {
 
     // object: 'DECLARE_TXN_V1_type'
     #[derive(Debug, Deserialize, Serialize)]
-    #[serde(rename_all = "UPPERCASE")]
     pub enum DeclareTxnV1Type {
+        #[serde(rename = "DECLARE")]
         Declare,
     }
 
@@ -372,8 +370,8 @@ pub mod gen {
 
     // object: 'DEPLOY_ACCOUNT_TXN_PROPERTIES_type'
     #[derive(Debug, Deserialize, Serialize)]
-    #[serde(rename_all = "UPPERCASE")]
     pub enum DeployAccountTxnPropertiesType {
+        #[serde(rename = "DEPLOY_ACCOUNT")]
         DeployAccount,
     }
 
@@ -388,8 +386,8 @@ pub mod gen {
 
     // object: 'DEPLOY_ACCOUNT_TXN_RECEIPT_type'
     #[derive(Debug, Deserialize, Serialize)]
-    #[serde(rename_all = "UPPERCASE")]
     pub enum DeployAccountTxnReceiptType {
+        #[serde(rename = "DEPLOY_ACCOUNT")]
         DeployAccount,
     }
 
@@ -413,8 +411,8 @@ pub mod gen {
 
     // object: 'DEPLOY_TXN_PROPERTIES_type'
     #[derive(Debug, Deserialize, Serialize)]
-    #[serde(rename_all = "UPPERCASE")]
     pub enum DeployTxnPropertiesType {
+        #[serde(rename = "DEPLOY")]
         Deploy,
     }
 
@@ -429,8 +427,8 @@ pub mod gen {
 
     // object: 'DEPLOY_TXN_RECEIPT_type'
     #[derive(Debug, Deserialize, Serialize)]
-    #[serde(rename_all = "UPPERCASE")]
     pub enum DeployTxnReceiptType {
+        #[serde(rename = "DEPLOY")]
         Deploy,
     }
 
@@ -571,8 +569,8 @@ pub mod gen {
 
     // object: 'EVENT_ABI_TYPE'
     #[derive(Debug, Deserialize, Serialize)]
-    #[serde(rename_all = "UPPERCASE")]
     pub enum EventAbiType {
+        #[serde(rename = "event")]
         Event,
     }
 
@@ -675,10 +673,12 @@ pub mod gen {
 
     // object: 'FUNCTION_ABI_TYPE'
     #[derive(Debug, Deserialize, Serialize)]
-    #[serde(rename_all = "UPPERCASE")]
     pub enum FunctionAbiType {
+        #[serde(rename = "constructor")]
         Constructor,
+        #[serde(rename = "function")]
         Function,
+        #[serde(rename = "l1_handler")]
         L1Handler,
     }
 
@@ -702,7 +702,6 @@ pub mod gen {
 
     // object: 'INVOKE_TXN_KIND'
     #[derive(Debug, Deserialize, Serialize)]
-    #[serde(rename_all = "UPPERCASE")]
     #[serde(untagged)]
     pub enum InvokeTxnKind {
         FunctionCall(FunctionCall),
@@ -719,8 +718,8 @@ pub mod gen {
 
     // object: 'INVOKE_TXN_RECEIPT_type'
     #[derive(Debug, Deserialize, Serialize)]
-    #[serde(rename_all = "UPPERCASE")]
     pub enum InvokeTxnReceiptType {
+        #[serde(rename = "INVOKE")]
         Invoke,
     }
 
@@ -741,8 +740,8 @@ pub mod gen {
 
     // object: 'INVOKE_TXN_type'
     #[derive(Debug, Deserialize, Serialize)]
-    #[serde(rename_all = "UPPERCASE")]
     pub enum InvokeTxnType {
+        #[serde(rename = "INVOKE")]
         Invoke,
     }
 
@@ -767,15 +766,15 @@ pub mod gen {
 
     // object: 'L1_HANDLER_TXN_RECEIPT_type'
     #[derive(Debug, Deserialize, Serialize)]
-    #[serde(rename_all = "UPPERCASE")]
     pub enum L1HandlerTxnReceiptType {
+        #[serde(rename = "L1_HANDLER")]
         L1Handler,
     }
 
     // object: 'L1_HANDLER_TXN_type'
     #[derive(Debug, Deserialize, Serialize)]
-    #[serde(rename_all = "UPPERCASE")]
     pub enum L1HandlerTxnType {
+        #[serde(rename = "L1_HANDLER")]
         L1Handler,
     }
 
@@ -901,7 +900,6 @@ pub mod gen {
 
     // object: 'PENDING_TXN_RECEIPT'
     #[derive(Debug, Deserialize, Serialize)]
-    #[serde(rename_all = "UPPERCASE")]
     #[serde(untagged)]
     pub enum PendingTxnReceipt {
         PendingCommonReceiptProperties(PendingCommonReceiptProperties),
@@ -1025,8 +1023,8 @@ pub mod gen {
 
     // object: 'STRUCT_ABI_TYPE'
     #[derive(Debug, Deserialize, Serialize)]
-    #[serde(rename_all = "UPPERCASE")]
     pub enum StructAbiType {
+        #[serde(rename = "struct")]
         Struct,
     }
 
@@ -1053,7 +1051,6 @@ pub mod gen {
 
     // object: 'TXN'
     #[derive(Debug, Deserialize, Serialize)]
-    #[serde(rename_all = "UPPERCASE")]
     #[serde(untagged)]
     pub enum Txn {
         DeclareTxn(DeclareTxn),
@@ -1069,7 +1066,6 @@ pub mod gen {
 
     // object: 'TXN_RECEIPT'
     #[derive(Debug, Deserialize, Serialize)]
-    #[serde(rename_all = "UPPERCASE")]
     #[serde(untagged)]
     pub enum TxnReceipt {
         DeclareTxnReceipt(DeclareTxnReceipt),
@@ -1082,22 +1078,29 @@ pub mod gen {
 
     // object: 'TXN_STATUS'
     #[derive(Debug, Deserialize, Serialize)]
-    #[serde(rename_all = "UPPERCASE")]
     pub enum TxnStatus {
+        #[serde(rename = "ACCEPTED_ON_L1")]
         AcceptedOnL1,
+        #[serde(rename = "ACCEPTED_ON_L2")]
         AcceptedOnL2,
+        #[serde(rename = "PENDING")]
         Pending,
+        #[serde(rename = "REJECTED")]
         Rejected,
     }
 
     // object: 'TXN_TYPE'
     #[derive(Debug, Deserialize, Serialize)]
-    #[serde(rename_all = "UPPERCASE")]
     pub enum TxnType {
+        #[serde(rename = "DECLARE")]
         Declare,
+        #[serde(rename = "DEPLOY")]
         Deploy,
+        #[serde(rename = "DEPLOY_ACCOUNT")]
         DeployAccount,
+        #[serde(rename = "INVOKE")]
         Invoke,
+        #[serde(rename = "L1_HANDLER")]
         L1Handler,
     }
 
@@ -1194,7 +1197,6 @@ pub mod gen {
 
     // object: 'getBlockWithTxHashes_result'
     #[derive(Debug, Deserialize, Serialize)]
-    #[serde(rename_all = "UPPERCASE")]
     #[serde(untagged)]
     pub enum GetBlockWithTxHashesResult {
         BlockWithTxHashes(BlockWithTxHashes),
@@ -1203,7 +1205,6 @@ pub mod gen {
 
     // object: 'getBlockWithTxs_result'
     #[derive(Debug, Deserialize, Serialize)]
-    #[serde(rename_all = "UPPERCASE")]
     #[serde(untagged)]
     pub enum GetBlockWithTxsResult {
         BlockWithTxs(BlockWithTxs),
@@ -1212,7 +1213,6 @@ pub mod gen {
 
     // object: 'getClassAt_result'
     #[derive(Debug, Deserialize, Serialize)]
-    #[serde(rename_all = "UPPERCASE")]
     #[serde(untagged)]
     pub enum GetClassAtResult {
         ContractClass(ContractClass),
@@ -1225,7 +1225,6 @@ pub mod gen {
 
     // object: 'getClass_result'
     #[derive(Debug, Deserialize, Serialize)]
-    #[serde(rename_all = "UPPERCASE")]
     #[serde(untagged)]
     pub enum GetClassResult {
         ContractClass(ContractClass),
@@ -1247,7 +1246,6 @@ pub mod gen {
 
     // object: 'getStateUpdate_result'
     #[derive(Debug, Deserialize, Serialize)]
-    #[serde(rename_all = "UPPERCASE")]
     #[serde(untagged)]
     pub enum GetStateUpdateResult {
         PendingStateUpdate(PendingStateUpdate),
@@ -1260,7 +1258,6 @@ pub mod gen {
 
     // object: 'getTransactionByBlockIdAndIndex_transactionResult'
     #[derive(Debug, Deserialize, Serialize)]
-    #[serde(rename_all = "UPPERCASE")]
     #[serde(untagged)]
     pub enum GetTransactionByBlockIdAndIndexTransactionResult {
         DeclareTxn(DeclareTxn),
@@ -1272,7 +1269,6 @@ pub mod gen {
 
     // object: 'getTransactionByHash_result'
     #[derive(Debug, Deserialize, Serialize)]
-    #[serde(rename_all = "UPPERCASE")]
     #[serde(untagged)]
     pub enum GetTransactionByHashResult {
         DeclareTxn(DeclareTxn),
@@ -1284,7 +1280,6 @@ pub mod gen {
 
     // object: 'getTransactionReceipt_result'
     #[derive(Debug, Deserialize, Serialize)]
-    #[serde(rename_all = "UPPERCASE")]
     #[serde(untagged)]
     pub enum GetTransactionReceiptResult {
         DeclareTxnReceipt(DeclareTxnReceipt),
@@ -1305,7 +1300,6 @@ pub mod gen {
 
     // object: 'syncing_syncing'
     #[derive(Debug, Deserialize, Serialize)]
-    #[serde(rename_all = "UPPERCASE")]
     #[serde(untagged)]
     pub enum SyncingSyncing {
         Boolean(bool),
