@@ -412,7 +412,8 @@ fn main() {
     );
 }
 
-const URL: &str = "http://localhost:3000/api";
+//const URL: &str = "http://localhost:3000/api";
+const URL: &str = concat!("https://starknet-goerli.infura.io/v3/", env!("INFURA_TOKEN"));
 
 fn call(id: i64, json: serde_json::Value) {
     use iamgroot::jsonrpc;
