@@ -35,3 +35,9 @@ cargo run --example rpc
   - C/C++
   - Erlang
   - etc
+
+---
+
+`INFURA_TOKEN=<snip> cargo run --example rpc > live_rs.txt`
+
+`INFURA_TOKEN=<snip> ./rpc.sh > live_sh.txt`
