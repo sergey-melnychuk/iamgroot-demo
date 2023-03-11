@@ -144,7 +144,7 @@ fn main() {
             "method": "starknet_call",
             "params": [
                 {
-                    "entry_point_selector": "0x1",
+                    "entry_point_selector": "0x79dc0da7c54b95f10aa182ad0a46400db63156920adb65eca2654c0945a463",
                     "calldata": ["0x2"],
                     "contract_address": "0x3e10411edafd29dfe6d427d03e35cb261b7a5efeee61bf73909ada048c029b9"
                 },
@@ -256,11 +256,7 @@ fn main() {
                     "to_block": {"block_number": 200},
                     "from_block": {"block_number": 100},
                     "address": "0xA",
-                    "keys": [
-                        ["0x1", "0x2"],
-                        ["0x3", "0x4"]
-                    ],
-                    "continuation_token": "0xcafebabe",
+                    "keys": ["0x1", "0x2", "0x3", "0x4"],
                     "chunk_size": 42
                 }
             }
@@ -344,13 +340,14 @@ fn main() {
                     "contract_class": {
                         "abi": [],
                         "entry_points_by_type": {
-                            "constructor": [],
-                            "external": [],
-                            "l1_handler": []
+                            "CONSTRUCTOR": [],
+                            "EXTERNAL": [],
+                            "L1_HANDLER": []
                         },
                         "program": "just-some-string"
                     },
-                    "sender_address": "0xA"
+                    "sender_address": "0xA",
+                    "type": "DECLARE"
                 }
             }
         }),
@@ -364,18 +361,17 @@ fn main() {
             "params": {
                 "declare_transaction": {
                     "max_fee": "0x1",
-                    "version": "0x1",
+                    "version": "0x0",
                     "nonce": "0x3",
                     "signature": [
                         "0x4"
                     ],
-                    "compiled_class_hash": "0xB",
                     "contract_class": {
                         "abi": "just-another-string",
                         "entry_points_by_type": {
-                            "constructor": [],
-                            "external": [],
-                            "l1_handler": []
+                            "CONSTRUCTOR": [],
+                            "EXTERNAL": [],
+                            "L1_HANDLER": []
                         },
                         "sierra_program": [
                             "0xAA",
@@ -417,7 +413,6 @@ fn main() {
 }
 
 const URL: &str = "http://localhost:3000/api";
-// const URL: &str = "https://starknet-goerli.infura.io/v3/xxx";
 
 fn call(id: i64, json: serde_json::Value) {
     use iamgroot::jsonrpc;
