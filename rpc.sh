@@ -2,27 +2,39 @@
 set -e;
 set -o pipefail;
 
+# ./rpc.sh "https://starknet-goerli.infura.io/v3/${INFURA_TOKEN}" > a.txt
+# ./rpc.sh "http://127.0.0.1:9000/proxy" > b.txt
+
+# curl -H 'Content-type: application/json' -d '@x.json' "https://starknet-goerli.infura.io/v3/${INFURA_TOKEN}"
+# curl -H 'Content-type: application/json' -d '@x.json' "http://localhost:9000/api"
+
+# URL=https://starknet-goerli.infura.io/v3/${INFURA_TOKEN}
+# URL=http://127.0.0.1:9000/proxy
+URL=${1}
+
 function rpc_call() {
-     printf "Request:\n${1}\nReply:\n"
+     printf ">>>\n"
+     echo ${1} | jq --sort-keys .
+     printf "<<<\n"
      curl -s -X POST \
           -H 'Content-Type: application/json' \
           -d "${1}" \
-          https://starknet-goerli.infura.io/v3/${INFURA_TOKEN}
-     printf "\n\n"
+          $URL | jq --sort-keys .
+     printf "\n"
 }
 
-rpc_call '{"jsonrpc":"2.0","id":"0","method":"starknet_getBlockWithTxs","params":["pending"]}'
-rpc_call '{"jsonrpc":"2.0","id":"2","method":"starknet_getBlockWithTxHashes","params":["pending"]}'
+# rpc_call '{"jsonrpc":"2.0","id":"0","method":"starknet_getBlockWithTxs","params":["pending"]}'
+# rpc_call '{"jsonrpc":"2.0","id":"2","method":"starknet_getBlockWithTxHashes","params":["pending"]}'
 
-rpc_call '{"jsonrpc":"2.0","id":"4","method":"starknet_getBlockWithTxs","params":["latest"]}'
-rpc_call '{"jsonrpc":"2.0","id":"6","method":"starknet_getBlockWithTxHashes","params":["latest"]}'
+# rpc_call '{"jsonrpc":"2.0","id":"4","method":"starknet_getBlockWithTxs","params":["latest"]}'
+# rpc_call '{"jsonrpc":"2.0","id":"6","method":"starknet_getBlockWithTxHashes","params":["latest"]}'
 
 rpc_call '{"jsonrpc":"2.0","id":"12","method":"starknet_getBlockWithTxs","params":[{"block_hash": "0x7d328a71faf48c5c3857e99f20a77b18522480956d1cd5bff1ff2df3c8b427b"}]}'
 rpc_call '{"jsonrpc":"2.0","id":"13","method":"starknet_getBlockWithTxs","params":[{"block_number": 41000}]}'
 
-rpc_call '[{"jsonrpc":"2.0","id":"0","method":"starknet_getStateUpdate","params":["latest"]},
-{"jsonrpc":"2.0","id":"1","method":"starknet_getStateUpdate","params":[{"block_number":0}]},
-{"jsonrpc":"2.0","id":"2","method":"starknet_getStateUpdate","params":[{"block_hash":"0x7d328a71faf48c5c3857e99f20a77b18522480956d1cd5bff1ff2df3c8b427b"}]}]'
+# rpc_call '[{"jsonrpc":"2.0","id":"0","method":"starknet_getStateUpdate","params":["latest"]},
+# {"jsonrpc":"2.0","id":"1","method":"starknet_getStateUpdate","params":[{"block_number":0}]},
+# {"jsonrpc":"2.0","id":"2","method":"starknet_getStateUpdate","params":[{"block_hash":"0x7d328a71faf48c5c3857e99f20a77b18522480956d1cd5bff1ff2df3c8b427b"}]}]'
 
 rpc_call '[{"jsonrpc":"2.0","id":"16","method":"starknet_getStorageAt","params":["0x6fbd460228d843b7fbef670ff15607bf72e19fa94de21e29811ada167b4ca39", "0x0206F38F7E4F15E87567361213C28F235CCCDAA1D7FD34C9DB1DFE9489C6A091", "latest"]},
 {"jsonrpc":"2.0","id":"17","method":"starknet_getStorageAt","params":["0x6fbd460228d843b7fbef670ff15607bf72e19fa94de21e29811ada167b4ca39", "0x0206F38F7E4F15E87567361213C28F235CCCDAA1D7FD34C9DB1DFE9489C6A091", "pending"]},
@@ -30,10 +42,10 @@ rpc_call '[{"jsonrpc":"2.0","id":"16","method":"starknet_getStorageAt","params":
 
 rpc_call '{"jsonrpc":"2.0","id":"19","method":"starknet_getTransactionByHash","params":["0x74ec6667e6057becd3faff77d9ab14aecf5dde46edb7c599ee771f70f9e80ba"]}'
 
-rpc_call '[{"jsonrpc":"2.0","id":"20","method":"starknet_getTransactionByBlockIdAndIndex","params":["latest", 0]},
-{"jsonrpc":"2.0","id":"22","method":"starknet_getTransactionByBlockIdAndIndex","params":["pending", 0]},
-{"jsonrpc":"2.0","id":"24","method":"starknet_getTransactionByBlockIdAndIndex","params":[{"block_hash": "0x3871c8a0c3555687515a07f365f6f5b1d8c2ae953f7844575b8bde2b2efed27"}, 4]},
-{"jsonrpc":"2.0","id":"25","method":"starknet_getTransactionByBlockNumberAndIndex","params":[{"block_number": 21348}, 4]}]'
+# rpc_call '[{"jsonrpc":"2.0","id":"20","method":"starknet_getTransactionByBlockIdAndIndex","params":["latest", 0]},
+# {"jsonrpc":"2.0","id":"22","method":"starknet_getTransactionByBlockIdAndIndex","params":["pending", 0]},
+# {"jsonrpc":"2.0","id":"24","method":"starknet_getTransactionByBlockIdAndIndex","params":[{"block_hash": "0x3871c8a0c3555687515a07f365f6f5b1d8c2ae953f7844575b8bde2b2efed27"}, 4]},
+# {"jsonrpc":"2.0","id":"25","method":"starknet_getTransactionByBlockNumberAndIndex","params":[{"block_number": 21348}, 4]}]'
 
 rpc_call '{"jsonrpc":"2.0","id":"26","method":"starknet_getTransactionReceipt","params":["0x74ec6667e6057becd3faff77d9ab14aecf5dde46edb7c599ee771f70f9e80ba"]}'
 
@@ -61,8 +73,8 @@ rpc_call '{
     "params": {
         "request": {
             "calldata": ["0x5"],
-            "contract_address": "0x019245f0f49d23f2379d3e3f20d1f3f46207d1c4a1d09cac8dd50e8d528aabe1",
-            "entry_point_selector": "0x026813d396fdb198e9ead934e4f7a592a8b88a059e45ab0eb6ee53494e8d45b0"
+            "contract_address": "0x19245f0f49d23f2379d3e3f20d1f3f46207d1c4a1d09cac8dd50e8d528aabe1",
+            "entry_point_selector": "0x26813d396fdb198e9ead934e4f7a592a8b88a059e45ab0eb6ee53494e8d45b0"
         },
         "block_id": {
             "block_hash": "0x7d328a71faf48c5c3857e99f20a77b18522480956d1cd5bff1ff2df3c8b427b"
@@ -77,29 +89,29 @@ rpc_call '{
     "method": "starknet_call",
     "params": {
         "request": {
-            "contract_address": "0x0019fcae2482de8fb3afaf8d4b219449bec93a5928f02f58eef645cc071767f4",
+            "contract_address": "0x19fcae2482de8fb3afaf8d4b219449bec93a5928f02f58eef645cc071767f4",
             "calldata": [
-                "0x0000000000000000000000000000000000000000000000000000000000000001",
-                "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
-                "0x0083afd3f4caedc6eebf44246fe54e38c95e3179a5ec9ea81740eca5b482d12e",
-                "0x0000000000000000000000000000000000000000000000000000000000000000",
-                "0x0000000000000000000000000000000000000000000000000000000000000003",
-                "0x0000000000000000000000000000000000000000000000000000000000000003",
-                "0x04681402a7ab16c41f7e5d091f32fe9b78de096e0bd5962ce5bd7aaa4a441f64",
-                "0x000000000000000000000000000000000000000000000000001d41f6331e6800",
-                "0x0000000000000000000000000000000000000000000000000000000000000000",
-                "0x0000000000000000000000000000000000000000000000000000000000000001"
+                "0x1",
+                "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+                "0x83afd3f4caedc6eebf44246fe54e38c95e3179a5ec9ea81740eca5b482d12e",
+                "0x0",
+                "0x3",
+                "0x3",
+                "0x4681402a7ab16c41f7e5d091f32fe9b78de096e0bd5962ce5bd7aaa4a441f64",
+                "0x1d41f6331e6800",
+                "0x0",
+                "0x1"
             ],
-            "entry_point_selector": "0x015d40a3d6ca2ac30f4031e42be28da9b056fef9bb7357ac5e85627ee876e5ad",
+            "entry_point_selector": "0x15d40a3d6ca2ac30f4031e42be28da9b056fef9bb7357ac5e85627ee876e5ad",
             "signature": [
                 "0x10E400D046147777C2AC5645024E1EE81C86D90B52D76AB8A8125E5F49612F9",
-                "0x0ADB92739205B4626FEFB533B38D0071EB018E6FF096C98C17A6826B536817B"
+                "0xADB92739205B4626FEFB533B38D0071EB018E6FF096C98C17A6826B536817B"
             ],
             "max_fee": "0x12C72866EFA9B",
             "version": "0x0"
         },
         "block_id": {
-            "block_hash": "0x0147c4b0f702079384e26d9d34a15e7758881e32b219fc68c076b09d0be13f8c"
+            "block_hash": "0x147c4b0f702079384e26d9d34a15e7758881e32b219fc68c076b09d0be13f8c"
         }
     }
 }'
@@ -113,30 +125,31 @@ rpc_call '{
     "method": "starknet_estimateFee",
     "params": {
         "request": {
+            "nonce": "0x1",
             "type": "INVOKE",
             "max_fee": "0x12C72866EFA9B",
             "version": "0x0",
             "signature": [
                 "0x10E400D046147777C2AC5645024E1EE81C86D90B52D76AB8A8125E5F49612F9",
-                "0x0ADB92739205B4626FEFB533B38D0071EB018E6FF096C98C17A6826B536817B"
+                "0xADB92739205B4626FEFB533B38D0071EB018E6FF096C98C17A6826B536817B"
             ],
-            "contract_address": "0x0019fcae2482de8fb3afaf8d4b219449bec93a5928f02f58eef645cc071767f4",
+            "contract_address": "0x19fcae2482de8fb3afaf8d4b219449bec93a5928f02f58eef645cc071767f4",
             "calldata": [
-                "0x0000000000000000000000000000000000000000000000000000000000000001",
-                "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
-                "0x0083afd3f4caedc6eebf44246fe54e38c95e3179a5ec9ea81740eca5b482d12e",
-                "0x0000000000000000000000000000000000000000000000000000000000000000",
-                "0x0000000000000000000000000000000000000000000000000000000000000003",
-                "0x0000000000000000000000000000000000000000000000000000000000000003",
-                "0x04681402a7ab16c41f7e5d091f32fe9b78de096e0bd5962ce5bd7aaa4a441f64",
-                "0x000000000000000000000000000000000000000000000000001d41f6331e6800",
-                "0x0000000000000000000000000000000000000000000000000000000000000000",
-                "0x0000000000000000000000000000000000000000000000000000000000000001"
+                "0x1",
+                "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+                "0x83afd3f4caedc6eebf44246fe54e38c95e3179a5ec9ea81740eca5b482d12e",
+                "0x0",
+                "0x3",
+                "0x3",
+                "0x4681402a7ab16c41f7e5d091f32fe9b78de096e0bd5962ce5bd7aaa4a441f64",
+                "0x1d41f6331e6800",
+                "0x0",
+                "0x1"
             ],
-            "entry_point_selector": "0x015d40a3d6ca2ac30f4031e42be28da9b056fef9bb7357ac5e85627ee876e5ad"
+            "entry_point_selector": "0x15d40a3d6ca2ac30f4031e42be28da9b056fef9bb7357ac5e85627ee876e5ad"
         },
         "block_id": {
-            "block_hash": "0x0147c4b0f702079384e26d9d34a15e7758881e32b219fc68c076b09d0be13f8c"
+            "block_hash": "0x147c4b0f702079384e26d9d34a15e7758881e32b219fc68c076b09d0be13f8c"
         }
     }
 }'
@@ -147,7 +160,7 @@ rpc_call '{
     "jsonrpc": "2.0",
     "method": "starknet_getEvents",
     "params": {
-        "filter": {"from_block": {"block_number": 800}, "to_block": {"block_number": 1701}, "chunk_size": 1000}
+        "filter": {"from_block": {"block_number": 800}, "to_block": {"block_number": 1701}, "chunk_size": 10}
     },
     "id": 0
 }'
@@ -156,7 +169,16 @@ rpc_call '{
     "jsonrpc": "2.0",
     "method": "starknet_getEvents",
     "params": {
-        "filter": {"from_block": {"block_number": 800}, "to_block": {"block_number": 1701}, "chunk_size": 1000, "continuation_token": "1000"}
+        "filter": {"from_block": {"block_number": 800}, "to_block": {"block_number": 1701}, "chunk_size": 10}
+    },
+    "id": 1
+}'
+
+rpc_call '{
+    "jsonrpc": "2.0",
+    "method": "starknet_getEvents",
+    "params": {
+        "filter": {"from_block": {"block_number": 800}, "to_block": {"block_number": 1701}, "chunk_size": 10, "continuation_token": "10"}
     },
     "id": 1
 }'
@@ -166,6 +188,7 @@ rpc_call '{
     "method": "starknet_addInvokeTransaction",
     "params": {
         "invoke_transaction": {
+            "nonce": "0x1",
             "type": "INVOKE",
             "max_fee": "0x4f388496839",
             "version": "0x0",
@@ -224,6 +247,6 @@ rpc_call '{
 }'
 
 rpc_call '{"jsonrpc":"2.0","id":"0","method":"starknet_chainId"}'
-rpc_call '{"jsonrpc":"2.0","id":"0","method":"starknet_getNonce","params":["latest", "0x019245f0f49d23f2379d3e3f20d1f3f46207d1c4a1d09cac8dd50e8d528aabe1"]}'
+rpc_call '{"jsonrpc":"2.0","id":"0","method":"starknet_getNonce","params":["latest", "0x19245f0f49d23f2379d3e3f20d1f3f46207d1c4a1d09cac8dd50e8d528aabe1"]}'
 rpc_call '{"jsonrpc":"2.0","id":"40","method":"starknet_syncing"}'
 rpc_call '{"jsonrpc":"2.0","id":"40","method":"starknet_pendingTransactions"}'

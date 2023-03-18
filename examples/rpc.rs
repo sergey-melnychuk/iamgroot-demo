@@ -33,7 +33,7 @@ fn main() {
     );
 
     call(
-        4,
+        401,
         serde_json::json!({
             "jsonrpc": "2.0",
             "method": "starknet_getStorageAt",
@@ -42,6 +42,19 @@ fn main() {
                 "key": "0x02",
                 "block_id": {"block_number": 123456},
             }
+        }),
+    );
+
+    call(
+        402,
+        serde_json::json!({
+            "jsonrpc": "2.0",
+            "method": "starknet_getStorageAt",
+            "params": [
+                "0x3e10411edafd29dfe6d427d03e35cb261b7a5efeee61bf73909ada048c029b9",
+                "0x02",
+                {"block_number": 123456}
+            ]
         }),
     );
 
@@ -341,7 +354,16 @@ fn main() {
                         "abi": [],
                         "entry_points_by_type": {
                             "CONSTRUCTOR": [],
-                            "EXTERNAL": [],
+                            "EXTERNAL": [
+                                {
+                                    "offset": "0x3a",
+                                    "selector": "0x362398bec32bc0ebb411203221a35a0301193a96f317ebe5e40be9f60d15320"
+                                },
+                                {
+                                    "offset": "0x5b",
+                                    "selector": "0x39e11d48192e4333233c7eb19d10ad67c362bb28580c604d67884c85da39695"
+                                }
+                            ],
                             "L1_HANDLER": []
                         },
                         "program": "just-some-string"
@@ -370,7 +392,16 @@ fn main() {
                         "abi": "just-another-string",
                         "entry_points_by_type": {
                             "CONSTRUCTOR": [],
-                            "EXTERNAL": [],
+                            "EXTERNAL": [
+                                {
+                                    "offset": "0x3a",
+                                    "selector": "0x362398bec32bc0ebb411203221a35a0301193a96f317ebe5e40be9f60d15320"
+                                },
+                                {
+                                    "offset": "0x5b",
+                                    "selector": "0x39e11d48192e4333233c7eb19d10ad67c362bb28580c604d67884c85da39695"
+                                }
+                            ],
                             "L1_HANDLER": []
                         },
                         "sierra_program": [
@@ -412,8 +443,11 @@ fn main() {
     );
 }
 
-//const URL: &str = "http://localhost:3000/api";
-const URL: &str = concat!("https://starknet-goerli.infura.io/v3/", env!("INFURA_TOKEN"));
+const URL: &str = "http://localhost:9000/api";
+// const URL: &str = concat!(
+//     "https://starknet-goerli.infura.io/v3/",
+//     env!("INFURA_TOKEN")
+// );
 
 fn call(id: i64, json: serde_json::Value) {
     use iamgroot::jsonrpc;
@@ -424,12 +458,6 @@ fn call(id: i64, json: serde_json::Value) {
     println!("\n>>> {}", json);
 
     let client = reqwest::blocking::Client::new();
-    let res: jsonrpc::Response = client
-        .post(URL)
-        .json(&req)
-        .send()
-        .unwrap()
-        .json()
-        .unwrap();
+    let res: jsonrpc::Response = client.post(URL).json(&req).send().unwrap().json().unwrap();
     println!("<<< {}", serde_json::to_string(&res).unwrap());
 }
