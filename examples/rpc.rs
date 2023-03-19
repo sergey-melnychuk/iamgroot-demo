@@ -443,7 +443,7 @@ fn main() {
     );
 }
 
-const URL: &str = "http://localhost:9000/api";
+const URL: &str = "http://localhost:3000/api";
 // const URL: &str = concat!(
 //     "https://starknet-goerli.infura.io/v3/",
 //     env!("INFURA_TOKEN")
