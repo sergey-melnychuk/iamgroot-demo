@@ -1,5 +1,5 @@
 use crate::generated::gen;
-use crate::jsonrpc;
+use iamgroot::jsonrpc;
 
 #[derive(Clone)]
 pub struct Impl {}

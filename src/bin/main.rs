@@ -1,7 +1,8 @@
 use std::net::SocketAddr;
 
 use axum::{extract::State, response::IntoResponse, routing::post, Json, Router};
-use iamgroot::{generated::gen, implemented::Impl, jsonrpc::Request};
+use iamgroot_demo::{generated::gen, implemented::Impl};
+use iamgroot::jsonrpc::Request;
 
 #[tokio::main]
 async fn main() {

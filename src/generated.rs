@@ -7,7 +7,7 @@ pub mod gen {
     use serde::{Deserialize, Serialize};
     use serde_json::Value;
 
-    use crate::jsonrpc;
+    use iamgroot::jsonrpc;
 
     // object: 'ADDRESS'
     #[derive(Debug, Deserialize, Serialize)]
