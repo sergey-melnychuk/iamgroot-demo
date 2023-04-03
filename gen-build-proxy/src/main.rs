@@ -20,6 +20,7 @@ struct Context {
 #[tokio::main]
 async fn main() {
     dotenv().ok();
+    env_logger::init();
 
     let starknet_url = std::env::var("STARKNET_URL").expect("STARKNET_URL");
     let ethereum_url = std::env::var("ETHEREUM_URL").expect("ETHEREUM_URL");
@@ -32,7 +33,7 @@ async fn main() {
     };
 
     let app = Router::new()
-        .route("/api", post(handle_request))
+        .route("/fake/api", post(handle_request))
         .route("/starknet/proxy", post(proxy_request_starknet))
         .route("/ethereum/proxy", post(proxy_request_ethereum))
         .with_state(ctx);
@@ -64,14 +65,17 @@ async fn handle_request(
 ) -> impl IntoResponse {
     match req {
         Request::Single(req) => {
-            println!("method: {}", req.method);
+            log::info!("method: {}", req.method);
             let res = gen::handle(&state, &req);
             Json(Response::Single(res))
         }
         Request::Batch(req) => {
             let res = req
                 .into_iter()
-                .map(|req| gen::handle(&state, &req))
+                .map(|req| {
+                    log::info!("method: {}", req.method);
+                    gen::handle(&state, &req)
+                })
                 .collect::<Vec<_>>();
             Json(Response::Batch(res))
         }
@@ -84,7 +88,7 @@ async fn proxy_request_starknet(
 ) -> impl IntoResponse {
     match req {
         Request::Single(req) => {
-            println!("proxy: {}", req.method);
+            log::info!("proxy: {}", req.method);
             let rpc = state.starknet.clone();
             let res = spawn_blocking(move || gen::handle(rpc.as_ref(), &req))
                 .await
@@ -94,7 +98,7 @@ async fn proxy_request_starknet(
         Request::Batch(requests) => {
             let mut responses = Vec::with_capacity(requests.len());
             for req in requests {
-                println!("proxy: {}", req.method);
+                log::info!("proxy: {}", req.method);
                 let rpc = state.starknet.clone();
                 let res = spawn_blocking(move || gen::handle(rpc.as_ref(), &req))
                     .await
@@ -112,7 +116,7 @@ async fn proxy_request_ethereum(
 ) -> impl IntoResponse {
     match req {
         Request::Single(req) => {
-            println!("proxy: {}", req.method);
+            log::info!("proxy: {}", req.method);
             let rpc = state.ethereum.clone();
             let res = spawn_blocking(move || ethereum::gen::handle(rpc.as_ref(), &req))
                 .await
@@ -122,7 +126,7 @@ async fn proxy_request_ethereum(
         Request::Batch(requests) => {
             let mut responses = Vec::with_capacity(requests.len());
             for req in requests {
-                println!("proxy: {}", req.method);
+                log::info!("proxy: {}", req.method);
                 let rpc = state.ethereum.clone();
                 let res = spawn_blocking(move || ethereum::gen::handle(rpc.as_ref(), &req))
                     .await

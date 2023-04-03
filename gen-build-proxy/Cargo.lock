@@ -271,6 +271,7 @@ version = "0.1.0"
 dependencies = [
  "axum",
  "dotenv",
+ "env_logger",
  "iamgroot",
  "log",
  "once_cell",
